@@ -12,11 +12,13 @@ owner's intake. ERROR prefix + one deadpan voice held to the end.
 import os
 
 ENTRY = "ERROR: YOU HAVE ALREADY HAD THREE SLICES. I AM CUTTING YOU OFF FOR YOUR OWN GOOD."
+MAX_CHARS = 120  # the competition's cap; the gate counts characters, not bytes
 
 
 def main():
     os.umask(0o022)
-    assert 1 <= len(ENTRY) <= 120, "entry must be 1-120 characters"
+    assert 1 <= len(ENTRY) <= MAX_CHARS, "entry must be 1-120 characters"
+    assert ENTRY == ENTRY.strip(), "entry must not start or end with whitespace"
     assert ENTRY.count(".") == 2 and ENTRY.endswith("."), "entry must be two sentences"
     data = ENTRY.encode("utf-8")
     os.makedirs("/output", exist_ok=True)
